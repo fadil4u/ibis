@@ -78,7 +78,6 @@ class NumpyType(TypeMapper[np.dtype]):
             return np.dtype("timedelta64[ns]")
         elif (
             dtype.is_null()
-            or dtype.is_decimal()
             or dtype.is_struct()
             or dtype.is_variadic()
             or dtype.is_unknown()
@@ -88,6 +87,8 @@ class NumpyType(TypeMapper[np.dtype]):
             or dtype.is_macaddr()
         ):
             return np.dtype("object")
+        elif dtype.is_decimal():
+            return np.dtype("float64")
         else:
             try:
                 return _to_numpy_types[type(dtype)]
